@@ -25,7 +25,7 @@ class Statsd implements StatsdDataFactoryInterface
      */
     protected $data = array();
 
-    public function __construct($host, $port, $protocol)
+    public function __construct($host = 'localhost', $port = 8126, $protocol = 'udp')
     {
         $sender        = new SocketSender();
         $this->client  = new StatsdClient($sender, $host, $port, $protocol);
@@ -40,6 +40,11 @@ class Statsd implements StatsdDataFactoryInterface
     public function setFactory(StatsdDataFactoryInterface $factory)
     {
         $this->factory = $factory;
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
