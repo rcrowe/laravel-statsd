@@ -20,6 +20,5 @@
         "psr-0": {
             "rcrowe\\Statsd": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
