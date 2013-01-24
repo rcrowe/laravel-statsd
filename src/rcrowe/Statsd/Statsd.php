@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Talk to Statsd from Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace rcrowe\Statsd;
 
 use Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface;
@@ -11,12 +18,12 @@ use Liuggio\StatsdClient\Factory\StatsdDataFactory;
 class Statsd implements StatsdDataFactoryInterface
 {
     /**
-     * @var Liuggio\StatsdClient\StatsdClient
+     * @var Liuggio\StatsdClient\StatsdClientInterface
      */
     protected $client;
 
     /**
-     * @var Liuggio\StatsdClient\Factory\StatsdDataFactory
+     * @var Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface
      */
     protected $factory;
 
@@ -25,6 +32,13 @@ class Statsd implements StatsdDataFactoryInterface
      */
     protected $data = array();
 
+    /**
+     * Create a new Statsd instance.
+     *
+     * @param string $host
+     * @param int    $port
+     * @param string $protocol
+     */
     public function __construct($host = 'localhost', $port = 8126, $protocol = 'udp')
     {
         $sender        = new SocketSender();
@@ -32,16 +46,33 @@ class Statsd implements StatsdDataFactoryInterface
         $this->factory = new StatsdDataFactory('\\Liuggio\\StatsdClient\\Entity\\StatsdData');
     }
 
+    /**
+     * Set the client used to send data to Statsd with.
+     *
+     * @param Liuggio\StatsdClient\StatsdClientInterface $client
+     * @return void
+     */
     public function setClient(StatsdClient $client)
     {
         $this->client = $client;
     }
 
+    /**
+     * Set the factory used to collect data with.
+     *
+     * @param Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface
+     * @return void
+     */
     public function setFactory(StatsdDataFactoryInterface $factory)
     {
         $this->factory = $factory;
     }
 
+    /**
+     * Get the current data that will be sent to Statsd.
+     *
+     * @return array
+     */
     public function getData()
     {
         return $this->data;
@@ -95,6 +126,11 @@ class Statsd implements StatsdDataFactoryInterface
         return $this->factory->produceStatsdData($key, $value, $metric);
     }
 
+    /**
+     * Sends stored metrics to Statsd if there are any.
+     *
+     * @return void
+     */
     function send()
     {
         // Only call send if we have data

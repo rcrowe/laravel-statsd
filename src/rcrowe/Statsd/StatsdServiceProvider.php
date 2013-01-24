@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Talk to Statsd from Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace rcrowe\Statsd;
 
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +26,11 @@ class StatsdServiceProvider extends ServiceProvider
         $this->registerSendEvent();
     }
 
+    /**
+     * Creates the Statsd client.
+     *
+     * @return void
+     */
     public function registerStatsdClient()
     {
         $this->app['statsd'] = new Statsd(
@@ -28,6 +40,11 @@ class StatsdServiceProvider extends ServiceProvider
         );
     }
 
+    /**
+     * Send any stored data to Statsd.
+     *
+     * @return void
+     */
     public function registerSendEvent()
     {
         $statsd = $this->app['statsd'];

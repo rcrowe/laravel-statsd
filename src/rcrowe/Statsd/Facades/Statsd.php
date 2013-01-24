@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Talk to Statsd from Laravel.
+ *
+ * @author Rob Crowe <hello@vivalacrowe.com>
+ * @license MIT
+ */
+
 namespace rcrowe\Statsd\Facades;
 
 use Illuminate\Support\Facades\Facade;
