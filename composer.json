@@ -1,0 +1,25 @@
+{
+    "name": "rcrowe/laravel-statsd",
+    "description": "Send to Statsd server from Laravel",
+    "keywords": ["laravel", "statsd"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rob Crowe",
+            "email": "hello@vivalacrowe.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "liuggio/statsd-php-client": "1.0.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.7.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "rcrowe\\Statsd": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
