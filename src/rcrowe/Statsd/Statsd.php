@@ -41,8 +41,8 @@ class Statsd implements StatsdDataFactoryInterface
      */
     public function __construct($host = 'localhost', $port = 8126, $protocol = 'udp')
     {
-        $sender        = new SocketSender();
-        $this->client  = new StatsdClient($sender, $host, $port, $protocol);
+        $sender        = new SocketSender($host, $port, $protocol);
+        $this->client  = new StatsdClient($sender);
         $this->factory = new StatsdDataFactory('\\Liuggio\\StatsdClient\\Entity\\StatsdData');
     }
 
