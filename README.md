@@ -45,23 +45,23 @@ Usage
 
 Laravel-Statsd exposes the following functions to send data to Statsd:
 
-```
+```php
 Statsd::timing($key, $time);
 ```
 
-```
+```php
 Statsd::gauge($key, $value);
 ```
 
-```
+```php
 Statsd::set($key, $value);
 ```
 
-```
+```php
 Statsd::increment($key);
 ```
 
-```
+```php
 Statsd::decrement($key);
 ```
 
