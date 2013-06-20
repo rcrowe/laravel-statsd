@@ -175,4 +175,53 @@ class StatsdTest extends PHPUnit_Framework_TestCase
 
         $statsd->send();
     }
+
+    public function testDisable()
+    {
+        $client = m::mock('Liuggio\StatsdClient\StatsdClient');
+        $client->shouldReceive('send')->never();
+
+        $statsd = new Statsd;
+        $statsd->setClient($client);
+
+        $statsd->disable();
+        $statsd->timing('key', time());
+
+        $statsd->send();
+    }
+
+    public function testDisableCalledLate()
+    {
+        $client = m::mock('Liuggio\StatsdClient\StatsdClient');
+        $client->shouldReceive('send')->never();
+
+        $statsd = new Statsd;
+        $statsd->setClient($client);
+
+        $statsd->timing('key', time());
+        $statsd->timing('key', time());
+        $statsd->timing('key', time());
+        $statsd->timing('key', time());
+        $statsd->timing('key', time());
+
+        $statsd->disable();
+        $statsd->send();
+    }
+
+    public function testEnable()
+    {
+        $client = m::mock('Liuggio\StatsdClient\StatsdClient');
+        $client->shouldReceive('send')->once();
+
+        $statsd = new Statsd;
+        $statsd->setClient($client);
+
+        $statsd->disable();
+
+        $statsd->timing('key', time());
+        $statsd->timing('key', time());
+
+        $statsd->enable();
+        $statsd->send();
+    }
 }

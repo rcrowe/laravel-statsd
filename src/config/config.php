@@ -2,15 +2,23 @@
 
 return array(
 
-    // Statsd host
-    // default: localhost
+    /**
+     * Statsd host.
+     */
     'host' => 'localhost',
 
-    // Statsd port
-    // default: 8126
+    /**
+     * Statsd port.
+     */
     'port' => 8126,
 
-    // Statsd protocol
-    // default: udp
+    /**
+     * Statsd protocol.
+     */
     'protocol' => 'udp',
+
+    /**
+     * Environments in which we allow sending to Statsd.
+     */
+    'environments' => ['prod', 'production'],
 );
