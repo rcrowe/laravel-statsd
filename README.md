@@ -10,7 +10,7 @@ Add `rcrowe\laravel-statsd` as a requirement to composer.json:
 ```javascript
 {
     "require": {
-        "rcrowe/laravel-statsd": "0.0.*"
+        "rcrowe/laravel-statsd": "0.5.*"
     }
 }
 ```
@@ -70,3 +70,5 @@ The data is automatically sent to Statsd at the end of Laravels life-cycle, but 
 ```php
 Statsd::send()
 ```
+
+Note: Data will only be sent to Statsd if your environment matches the environments defined in the config file.
