@@ -18,12 +18,12 @@ use Liuggio\StatsdClient\Factory\StatsdDataFactory;
 class Statsd implements StatsdDataFactoryInterface
 {
     /**
-     * @var Liuggio\StatsdClient\StatsdClientInterface
+     * @var \Liuggio\StatsdClient\StatsdClientInterface
      */
     protected $client;
 
     /**
-     * @var Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface
+     * @var \Liuggio\StatsdClient\Factory\StatsdDataFactoryInterface
      */
     protected $factory;
 
@@ -31,6 +31,11 @@ class Statsd implements StatsdDataFactoryInterface
      * @var array Holds collected data for sending
      */
     protected $data = array();
+
+    /**
+     * @var bool If false don't send the data to Statsd
+     */
+    protected $enabled = true;
 
     /**
      * Create a new Statsd instance.
@@ -44,6 +49,26 @@ class Statsd implements StatsdDataFactoryInterface
         $sender        = new SocketSender($host, $port, $protocol);
         $this->client  = new StatsdClient($sender);
         $this->factory = new StatsdDataFactory('\\Liuggio\\StatsdClient\\Entity\\StatsdData');
+    }
+
+    /**
+     * Disable sending to Statsd.
+     *
+     * @return void
+     */
+    public function disable()
+    {
+        $this->enabled = false;
+    }
+
+    /**
+     * Enable of sending to Statsd.
+     *
+     * @return void
+     */
+    public function enable()
+    {
+        $this->enabled = true;
     }
 
     /**
@@ -127,14 +152,17 @@ class Statsd implements StatsdDataFactoryInterface
     }
 
     /**
-     * Sends stored metrics to Statsd if there are any.
+     * Sends stored metrics to Statsd if there are any and sending is enabled.
+     *
+     * @see \rcrowe\Statsd\Statsd::disable()
+     * @see \rcrowe\Statsd\Statsd::enable()
      *
      * @return void
      */
     function send()
     {
-        // Only call send if we have data
-        if (count($this->data) > 0) {
+        // Only call send if enabled and we have data
+        if ($this->enabled AND count($this->data) > 0) {
             $this->client->send($this->data);
         }
     }

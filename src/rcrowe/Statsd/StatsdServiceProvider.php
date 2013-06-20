@@ -38,6 +38,14 @@ class StatsdServiceProvider extends ServiceProvider
             $this->app['config']->get('statsd::port', 8126),
             $this->app['config']->get('statsd::protocol', 'udp')
         );
+
+        // Disable logging if we aren't on the right environment
+        $environments        = $this->app['config']->get('statsd::environments', array());
+        $current_environment = $this->app['env'];
+
+        if (is_array($environments) AND !in_array($current_environment, $environments)) {
+            $this->app['statsd']->disable();
+        }
     }
 
     /**
