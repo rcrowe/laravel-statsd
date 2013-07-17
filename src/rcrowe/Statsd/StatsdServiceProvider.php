@@ -20,7 +20,7 @@ class StatsdServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['config']->package('rcrowe/statsd', __DIR__.'/../../config');
+        $this->app['config']->package('rcrowe/laravel-statsd', __DIR__.'/../../config');
 
         $this->registerStatsdClient();
         $this->registerSendEvent();
@@ -34,13 +34,13 @@ class StatsdServiceProvider extends ServiceProvider
     public function registerStatsdClient()
     {
         $this->app['statsd'] = new Statsd(
-            $this->app['config']->get('statsd::host', 'localhost'),
-            $this->app['config']->get('statsd::port', 8126),
-            $this->app['config']->get('statsd::protocol', 'udp')
+            $this->app['config']->get('laravel-statsd::host', 'localhost'),
+            $this->app['config']->get('laravel-statsd::port', 8126),
+            $this->app['config']->get('laravel-statsd::protocol', 'udp')
         );
 
         // Disable logging if we aren't on the right environment
-        $environments        = $this->app['config']->get('statsd::environments', array());
+        $environments        = $this->app['config']->get('laravel-statsd::environments', array());
         $current_environment = $this->app['env'];
 
         if (is_array($environments) AND !in_array($current_environment, $environments)) {
