@@ -57,7 +57,7 @@ class StatsdServiceProvider extends ServiceProvider
     {
         $statsd = $this->app['statsd'];
 
-        $this->app->after(function() use($statsd) {
+        $this->app->shutdown(function() use($statsd) {
             $statsd->send();
         });
     }
