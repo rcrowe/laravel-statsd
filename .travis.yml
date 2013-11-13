@@ -9,13 +9,4 @@ before_script:
     - curl -s https://getcomposer.org/installer | php
     - php ./composer.phar install --dev --prefer-source
 
-script: phpunit --configuration phpunit.xml.dist
-
-notifications:
-    email: false
-    campfire:
-        on_success: always
-        on_failure: always
-        rooms:
-            - secure: "aBt3H1/1MNyPQ2nSnJPDaFlMjdY4NvNl3UGaCfM8vwBUup3teGL0L7F3NfhQ\n4WP+Sc/13x21S3ZkNYF4vVzrif3zFkXaQnFRrDWLrxar3/yE96ywItSn2ZAJ\n08lM3YBzBhgdGrxloxcKldlImpN+VsNVajNiSK+6IT42mlEnfv4="
-
+script: ./vendor/bin/phpunit --configuration phpunit.xml
