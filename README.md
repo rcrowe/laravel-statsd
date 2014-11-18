@@ -65,6 +65,10 @@ Statsd::increment($key);
 Statsd::decrement($key);
 ```
 
+```php
+Statsd::updateCount($key, $delta);
+```
+
 The data is automatically sent to Statsd at the end of Laravels life-cycle, but you can force data to be sent with:
 
 ```php
