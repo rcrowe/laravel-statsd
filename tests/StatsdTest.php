@@ -197,6 +197,9 @@ class StatsdTest extends PHPUnit_Framework_TestCase
         $statsd->timing('key', time());
 
         $statsd->send();
+
+        $data = $statsd->getData();
+        $this->assertTrue(count($data) === 0);
     }
 
     public function testDisable()

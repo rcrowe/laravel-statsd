@@ -172,6 +172,7 @@ class Statsd implements StatsdDataFactoryInterface
         // Only call send if enabled and we have data
         if ($this->enabled AND count($this->data) > 0) {
             $this->client->send($this->data);
+            $this->data = [];
         }
     }
 }
