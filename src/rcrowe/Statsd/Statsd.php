@@ -146,6 +146,14 @@ class Statsd implements StatsdDataFactoryInterface
     /**
      * @inherit
      **/
+    function updateCount($key, $delta)
+    {
+        $this->data[] = $this->factory->updateCount($key, $delta);
+    }
+
+    /**
+     * @inherit
+     **/
     function produceStatsdData($key, $value = 1, $metric = StatsdDataInterface::STATSD_METRIC_COUNT)
     {
         return $this->factory->produceStatsdData($key, $value, $metric);
@@ -164,6 +172,7 @@ class Statsd implements StatsdDataFactoryInterface
         // Only call send if enabled and we have data
         if ($this->enabled AND count($this->data) > 0) {
             $this->client->send($this->data);
+            $this->data = array();
         }
     }
 }

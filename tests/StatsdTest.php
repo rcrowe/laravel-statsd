@@ -113,6 +113,26 @@ class StatsdTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data[1], 'two');
     }
 
+    public function testUpdateCount()
+    {
+        $factory = m::mock('Liuggio\StatsdClient\Factory\StatsdDataFactory');
+        $factory->shouldReceive('updateCount')->twice()->andReturn('one', 'two');
+
+        $statsd = new Statsd;
+        $statsd->setFactory($factory);
+
+        $this->assertTrue(count($statsd->getData()) === 0);
+
+        $statsd->updateCount('key', 2);
+        $statsd->updateCount('key', 4);
+
+        $data = $statsd->getData();
+
+        $this->assertTrue(count($data) === 2);
+        $this->assertEquals($data[0], 'one');
+        $this->assertEquals($data[1], 'two');
+    }
+
     public function testAllCalled()
     {
         $factory = m::mock('Liuggio\StatsdClient\Factory\StatsdDataFactory');
@@ -121,6 +141,7 @@ class StatsdTest extends PHPUnit_Framework_TestCase
         $factory->shouldReceive('set')->once()->andReturn('set');
         $factory->shouldReceive('increment')->once()->andReturn('increment');
         $factory->shouldReceive('decrement')->once()->andReturn('decrement');
+        $factory->shouldReceive('updateCount')->once()->andReturn('updateCount');
 
         $statsd = new Statsd;
         $statsd->setFactory($factory);
@@ -130,15 +151,17 @@ class StatsdTest extends PHPUnit_Framework_TestCase
         $statsd->set('key', 'value');
         $statsd->increment('key');
         $statsd->decrement('key');
+        $statsd->updateCount('key', 2);
 
         $data = $statsd->getData();
 
-        $this->assertTrue(count($data) === 5);
+        $this->assertTrue(count($data) === 6);
         $this->assertEquals($data[0], 'timing');
         $this->assertEquals($data[1], 'gauge');
         $this->assertEquals($data[2], 'set');
         $this->assertEquals($data[3], 'increment');
         $this->assertEquals($data[4], 'decrement');
+        $this->assertEquals($data[5], 'updateCount');
     }
 
     public function testDataTypeStored()
@@ -174,6 +197,9 @@ class StatsdTest extends PHPUnit_Framework_TestCase
         $statsd->timing('key', time());
 
         $statsd->send();
+
+        $data = $statsd->getData();
+        $this->assertTrue(count($data) === 0);
     }
 
     public function testDisable()
